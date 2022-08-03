@@ -1,6 +1,6 @@
 {
   "name": "aframe-input",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Using input element in AFRAME!",
   "homepage": "https://github.com/juunini/aframe-input",
   "scripts": {
@@ -91,6 +91,7 @@
   "dependencies": {
     "@babel/runtime": "^7.18.3",
     "@babylonjs/core": "^5.12.1",
+    "aframe-troika-text": "^0.7.1",
     "socket.io-client": "^4.5.1"
   },
   "bundlewatch": {
