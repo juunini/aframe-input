@@ -1,4 +1,10 @@
-AFRAME.registerComponent('a-input', {});
+import './a-input-text-box';
+
+AFRAME.registerComponent('a-input', {
+  init() {
+    this.el.innerHTML = '<a-input-text-box />';
+  },
+});
 
 AFRAME.registerPrimitive('a-input', {
   defaultComponents: {

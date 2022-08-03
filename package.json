@@ -1,7 +1,7 @@
 {
   "name": "aframe-input",
-  "version": "0.0.1",
-  "description": "B web framework for building virtual reality experiences.",
+  "version": "0.0.2",
+  "description": "Using input element in AFRAME!",
   "homepage": "https://github.com/juunini/aframe-input",
   "scripts": {
     "test": "is-ci \"test:ci\" \"test:dev\"",
