@@ -1,5 +1,6 @@
 type Side = 'front' | 'back';
 const SIDES: Side[] = ['front', 'back'];
+const POSITION_Z = 0.001;
 
 interface Schema {
   width: number;
@@ -26,23 +27,17 @@ AFRAME.registerComponent('input-text-box', {
 
   init() {
     this.initBorder();
-    this.initSide('front');
-    this.initSide('back');
+    SIDES.forEach((side) => this.initSide(side));
   },
 
   /** @private */ initBorder() {
     this.border.setAttribute('side', 'double');
-    this.border.setAttribute('width', this.data.width + this.data.borderWidth);
-    this.border.setAttribute('height', this.data.height + this.data.borderWidth);
     this.el.appendChild(this.border);
   },
 
   /** @private */ initSide(side: Side) {
     this.side[side].setAttribute('side', side);
-    this.side[side].setAttribute('position', { x: 0, y: 0, z: side === 'front' ? 0.001 : -0.001 });
-    this.side[side].setAttribute('color', this.data.color);
-    this.side[side].setAttribute('width', this.data.width);
-    this.side[side].setAttribute('height', this.data.height);
+    this.side[side].setAttribute('position', { x: 0, y: 0, z: side === 'front' ? POSITION_Z : -POSITION_Z });
     this.el.appendChild(this.side[side]);
   },
 
