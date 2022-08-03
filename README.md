@@ -7,9 +7,6 @@
 </p>
 
 <p align="center">
-  <a href="https://codecov.io/gh/juunini/aframe-input">
-    <img src="https://codecov.io/gh/juunini/aframe-input/branch/main/graph/badge.svg" alt="Coverage Status">
-  </a>
   <a href="https://npmjs.org/package/aframe-input">
     <img src="https://img.shields.io/npm/dt/aframe-input.svg?style=flat-square" alt="Downloads">
   </a>
