@@ -1,5 +1,6 @@
-type Side = 'front' | 'back';
-const SIDES: Side[] = ['front', 'back'];
+import type { Side } from './constants';
+import { SIDES } from './constants';
+
 const POSITION_Z = 0.0025;
 
 interface Schema {
