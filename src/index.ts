@@ -47,6 +47,7 @@ AFRAME.registerComponent('aframe-input', {
       () => {
         this.inputTextBox.setAttribute('border-color', this.data.focusBorderColor);
         this.inputCursor.setAttribute('visible', true);
+        this.inputCursor.setAttribute('position-x', this.input.selectionStart! * 0.124);
       },
     );
     this.input.addEventListener(
@@ -60,7 +61,12 @@ AFRAME.registerComponent('aframe-input', {
       'input',
       () => this.el.setAttribute('aframe-input', 'value', this.input.value),
     );
-    this.input.addEventListener('keyup', () => console.log(this.input.selectionStart, this.input.selectionEnd));
+    this.input.addEventListener('keyup', () => {
+      const size = this.input.selectionEnd! - this.input.selectionStart! + 1;
+
+      this.inputCursor.setAttribute('size', size);
+      this.inputCursor.setAttribute('position-x', this.input.selectionStart! * 0.124);
+    });
   },
 
   setInputCursorLastPosition() {
