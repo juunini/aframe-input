@@ -4,6 +4,7 @@ import { SIDES } from './constants';
 const POSITION_Z = 0.004;
 
 interface Schema {
+  size: number;
   color: string;
   opacity: number;
   positionX: number;
@@ -11,6 +12,7 @@ interface Schema {
 
 AFRAME.registerComponent('input-cursor', {
   schema: {
+    size: { type: 'number', default: 1 },
     color: { type: 'color', default: '#000' },
     opacity: { type: 'number', default: 0.5 },
     positionX: { type: 'number', default: 0 },
@@ -28,7 +30,7 @@ AFRAME.registerComponent('input-cursor', {
   /** @private */ initSide(side: Side) {
     this.side[side].setAttribute('side', side);
     this.side[side].setAttribute('position', {
-      x: this.data.positionX,
+      x: this.data.positionX + (this.data.size * 0.05),
       y: 0,
       z: side === 'front' ? POSITION_Z : -POSITION_Z,
     });
@@ -54,6 +56,7 @@ AFRAME.registerComponent('input-cursor', {
     color,
     opacity,
     positionX,
+    size,
   }: Schema) {
     if (color !== this.data.color) {
       this.updateColor();
@@ -66,6 +69,10 @@ AFRAME.registerComponent('input-cursor', {
     if (positionX !== this.data.positionX) {
       this.updatePositionX();
     }
+
+    if (size !== this.data.size) {
+      this.updateSize();
+    }
   },
 
   /** @private */ updateColor() {
@@ -76,7 +83,19 @@ AFRAME.registerComponent('input-cursor', {
     SIDES.forEach((side) => this.side[side].setAttribute('animation', 'from', this.data.opacity));
   },
   /** @private */ updatePositionX() {
-    SIDES.forEach((side) => this.side[side].setAttribute('position', 'x', this.data.positionX));
+    SIDES.forEach((side) => this.side[side].setAttribute('position', {
+      x: this.data.positionX + (this.data.size * 0.05),
+      y: 0,
+      z: side === 'front' ? POSITION_Z : -POSITION_Z,
+    }));
+  },
+  /** @private */ updateSize() {
+    SIDES.forEach((side) => this.side[side].setAttribute('width', this.data.size * 0.1));
+    SIDES.forEach((side) => this.side[side].setAttribute('position', {
+      x: this.data.positionX + (this.data.size * 0.05),
+      y: 0,
+      z: side === 'front' ? POSITION_Z : -POSITION_Z,
+    }));
   },
 });
 
@@ -88,6 +107,7 @@ AFRAME.registerPrimitive('a-input-cursor', {
     color: 'input-cursor.color',
     opacity: 'input-cursor.opacity',
     'position-x': 'input-cursor.positionX',
+    size: 'input-cursor.size',
   },
 });
 
