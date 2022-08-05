@@ -44,11 +44,17 @@ AFRAME.registerComponent('aframe-input', {
     this.input.setAttribute('value', this.data.value);
     this.input.addEventListener(
       'focus',
-      () => this.inputTextBox.setAttribute('border-color', this.data.focusBorderColor),
+      () => {
+        this.inputTextBox.setAttribute('border-color', this.data.focusBorderColor);
+        this.inputCursor.setAttribute('visible', true);
+      },
     );
     this.input.addEventListener(
       'blur',
-      () => this.inputTextBox.setAttribute('border-color', this.data.borderColor),
+      () => {
+        this.inputTextBox.setAttribute('border-color', this.data.borderColor);
+        this.inputCursor.setAttribute('visible', false);
+      },
     );
     this.input.addEventListener(
       'input',

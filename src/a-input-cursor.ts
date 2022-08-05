@@ -7,7 +7,6 @@ interface Schema {
   color: string;
   opacity: number;
   positionX: number;
-  visible: boolean;
 }
 
 AFRAME.registerComponent('input-cursor', {
@@ -15,7 +14,6 @@ AFRAME.registerComponent('input-cursor', {
     color: { type: 'color', default: '#000' },
     opacity: { type: 'number', default: 0.5 },
     positionX: { type: 'number', default: 0 },
-    visible: { type: 'boolean', default: false },
   },
 
   /** @private */ side: {
@@ -39,16 +37,23 @@ AFRAME.registerComponent('input-cursor', {
     this.side[side].setAttribute('transparent', true);
     this.side[side].setAttribute('width', 0.1);
     this.side[side].setAttribute('height', 0.25);
-    this.side[side].setAttribute('visible', this.data.visible);
+    this.side[side].setAttribute('animation', {
+      property: 'opacity',
+      from: this.data.opacity,
+      to: 0,
+      loop: true,
+      dur: 1000,
+      dir: 'alternate',
+    });
 
     this.el.appendChild(this.side[side]);
+    this.el.setAttribute('visible', false);
   },
 
   update({
     color,
     opacity,
     positionX,
-    visible,
   }: Schema) {
     if (color !== this.data.color) {
       this.updateColor();
@@ -61,10 +66,6 @@ AFRAME.registerComponent('input-cursor', {
     if (positionX !== this.data.positionX) {
       this.updatePositionX();
     }
-
-    if (visible !== this.data.visible) {
-      this.updateVisible();
-    }
   },
 
   /** @private */ updateColor() {
@@ -72,12 +73,10 @@ AFRAME.registerComponent('input-cursor', {
   },
   /** @private */ updateOpacity() {
     SIDES.forEach((side) => this.side[side].setAttribute('opacity', this.data.opacity));
+    SIDES.forEach((side) => this.side[side].setAttribute('animation', 'from', this.data.opacity));
   },
   /** @private */ updatePositionX() {
     SIDES.forEach((side) => this.side[side].setAttribute('position', 'x', this.data.positionX));
-  },
-  /** @private */ updateVisible() {
-    SIDES.forEach((side) => this.side[side].setAttribute('visible', this.data.visible));
   },
 });
 
@@ -88,6 +87,7 @@ AFRAME.registerPrimitive('a-input-cursor', {
   mappings: {
     color: 'input-cursor.color',
     opacity: 'input-cursor.opacity',
+    'position-x': 'input-cursor.positionX',
   },
 });
 
