@@ -1,6 +1,6 @@
 {
   "name": "aframe-input",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Using input element in AFRAME!",
   "homepage": "https://github.com/juunini/aframe-input",
   "scripts": {

@@ -5,7 +5,7 @@ import './a-input-text';
 AFRAME.registerComponent('aframe-input', {
   /** @private */ inputTextBox: document.createElement('a-input-text-box'),
   /** @private */ inputText: document.createElement('a-input-text'),
-  /** @private */ input: document.createElement('input'),
+  /** @private */ input: document.createElement('input') as unknown as HTMLInputElement,
 
   schema: {
     value: { type: 'string', default: '' },
@@ -34,7 +34,10 @@ AFRAME.registerComponent('aframe-input', {
   },
 
   initInputEvent() {
-    this.el.addEventListener('click', () => this.input.focus());
+    this.el.addEventListener('click', () => {
+      this.setInputCursorLastPosition();
+      this.input.focus();
+    });
     this.input.setAttribute('value', this.data.value);
     this.input.addEventListener(
       'focus',
@@ -47,6 +50,13 @@ AFRAME.registerComponent('aframe-input', {
     this.input.addEventListener(
       'input',
       (e) => this.el.setAttribute('aframe-input', 'value', (e.target as any).value),
+    );
+  },
+
+  setInputCursorLastPosition() {
+    this.input.setSelectionRange(
+      this.input.value.length,
+      this.input.value.length,
     );
   },
 
