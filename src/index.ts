@@ -1,10 +1,12 @@
 import 'aframe-troika-text';
 import './a-input-text-box';
 import './a-input-text';
+import './a-input-cursor';
 
 AFRAME.registerComponent('aframe-input', {
   /** @private */ inputTextBox: document.createElement('a-input-text-box'),
   /** @private */ inputText: document.createElement('a-input-text'),
+  /** @private */ inputCursor: document.createElement('a-input-cursor'),
   /** @private */ input: document.createElement('input') as unknown as HTMLInputElement,
 
   schema: {
@@ -21,6 +23,7 @@ AFRAME.registerComponent('aframe-input', {
   init() {
     this.el.appendChild(this.inputTextBox);
     this.el.appendChild(this.inputText);
+    this.el.appendChild(this.inputCursor);
     this.el.appendChild(this.input);
 
     this.setInputStyle();
@@ -49,8 +52,9 @@ AFRAME.registerComponent('aframe-input', {
     );
     this.input.addEventListener(
       'input',
-      (e) => this.el.setAttribute('aframe-input', 'value', (e.target as any).value),
+      () => this.el.setAttribute('aframe-input', 'value', this.input.value),
     );
+    this.input.addEventListener('keyup', () => console.log(this.input.selectionStart, this.input.selectionEnd));
   },
 
   setInputCursorLastPosition() {
