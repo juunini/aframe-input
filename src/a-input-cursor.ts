@@ -7,6 +7,7 @@ interface Schema {
   color: string;
   opacity: number;
   positionX: number;
+  visible: boolean;
 }
 
 AFRAME.registerComponent('input-cursor', {
@@ -14,6 +15,7 @@ AFRAME.registerComponent('input-cursor', {
     color: { type: 'color', default: '#000' },
     opacity: { type: 'number', default: 0.5 },
     positionX: { type: 'number', default: 0 },
+    visible: { type: 'boolean', default: false },
   },
 
   /** @private */ side: {
@@ -27,13 +29,17 @@ AFRAME.registerComponent('input-cursor', {
 
   /** @private */ initSide(side: Side) {
     this.side[side].setAttribute('side', side);
-    this.side[side].setAttribute('position', { x: 0, y: 0, z: side === 'front' ? POSITION_Z : -POSITION_Z });
+    this.side[side].setAttribute('position', {
+      x: this.data.positionX,
+      y: 0,
+      z: side === 'front' ? POSITION_Z : -POSITION_Z,
+    });
     this.side[side].setAttribute('color', this.data.color);
     this.side[side].setAttribute('opacity', this.data.opacity);
     this.side[side].setAttribute('transparent', true);
     this.side[side].setAttribute('width', 0.1);
     this.side[side].setAttribute('height', 0.25);
-    this.side[side].setAttribute('position', { x: this.data.positionX, y: 0, z: 0 });
+    this.side[side].setAttribute('visible', this.data.visible);
 
     this.el.appendChild(this.side[side]);
   },
@@ -42,6 +48,7 @@ AFRAME.registerComponent('input-cursor', {
     color,
     opacity,
     positionX,
+    visible,
   }: Schema) {
     if (color !== this.data.color) {
       this.updateColor();
@@ -54,6 +61,10 @@ AFRAME.registerComponent('input-cursor', {
     if (positionX !== this.data.positionX) {
       this.updatePositionX();
     }
+
+    if (visible !== this.data.visible) {
+      this.updateVisible();
+    }
   },
 
   /** @private */ updateColor() {
@@ -64,6 +75,9 @@ AFRAME.registerComponent('input-cursor', {
   },
   /** @private */ updatePositionX() {
     SIDES.forEach((side) => this.side[side].setAttribute('position', 'x', this.data.positionX));
+  },
+  /** @private */ updateVisible() {
+    SIDES.forEach((side) => this.side[side].setAttribute('visible', this.data.visible));
   },
 });
 
