@@ -7,6 +7,7 @@ interface Schema {
   value: string;
   color: string;
   font: string;
+  align: string;
 }
 
 AFRAME.registerComponent('input-text', {
@@ -14,6 +15,7 @@ AFRAME.registerComponent('input-text', {
     value: { type: 'string', default: '' },
     color: { type: 'color', default: '#000' },
     font: { type: 'string', default: '' },
+    align: { type: 'string', default: 'left' },
   },
 
   /** @private */ side: {
@@ -29,6 +31,7 @@ AFRAME.registerComponent('input-text', {
     this.side[side].setAttribute('side', side);
     this.side[side].setAttribute('font', this.data.font);
     this.side[side].setAttribute('position', { x: 0, y: 0, z: side === 'front' ? POSITION_Z : -POSITION_Z });
+    this.side[side].setAttribute('anchor', this.data.align);
     this.el.appendChild(this.side[side]);
   },
 
@@ -36,6 +39,7 @@ AFRAME.registerComponent('input-text', {
     value,
     color,
     font,
+    align,
   }: Schema) {
     if (color !== this.data.color) {
       this.updateColor();
@@ -48,6 +52,10 @@ AFRAME.registerComponent('input-text', {
     if (font !== this.data.font) {
       this.updateFont();
     }
+
+    if (align !== this.data.align) {
+      this.updateAlign();
+    }
   },
 
   /** @private */ updateValue() {
@@ -59,6 +67,9 @@ AFRAME.registerComponent('input-text', {
   /** @private */ updateFont() {
     SIDES.forEach((side) => this.side[side].setAttribute('font', this.data.font));
   },
+  /** @private */ updateAlign() {
+    SIDES.forEach((side) => this.side[side].setAttribute('anchor', this.data.align));
+  },
 });
 
 AFRAME.registerPrimitive('a-input-text', {
@@ -69,6 +80,7 @@ AFRAME.registerPrimitive('a-input-text', {
     value: 'input-text.value',
     color: 'input-text.color',
     font: 'input-text.font',
+    align: 'input-text.align',
   },
 });
 
