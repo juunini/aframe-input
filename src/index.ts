@@ -15,6 +15,7 @@ AFRAME.registerComponent('aframe-input', {
     backgroundColor: { type: 'color', default: '#FFF' },
     borderColor: { type: 'color', default: '#000' },
     borderWidth: { type: 'number', default: 0.1 },
+    focusBorderColor: { type: 'color', default: '#719ECE' },
   },
 
   init() {
@@ -34,21 +35,49 @@ AFRAME.registerComponent('aframe-input', {
 
   initInputEvent() {
     this.el.addEventListener('click', () => this.input.focus());
+    this.input.setAttribute('value', this.data.value);
+    this.input.addEventListener(
+      'focus',
+      () => this.inputTextBox.setAttribute('border-color', this.data.focusBorderColor),
+    );
+    this.input.addEventListener(
+      'blur',
+      () => this.inputTextBox.setAttribute('border-color', this.data.borderColor),
+    );
     this.input.addEventListener(
       'input',
-      // @ts-ignore
-      (e) => this.el.setAttribute('aframe-input', 'value', e.target.value),
+      (e) => this.el.setAttribute('aframe-input', 'value', (e.target as any).value),
     );
   },
 
-  update() {
-    this.inputText.setAttribute('value', this.data.value);
-    this.inputText.setAttribute('font', this.data.font);
-    this.inputTextBox.setAttribute('width', this.data.width);
-    this.inputTextBox.setAttribute('height', this.data.height);
-    this.inputTextBox.setAttribute('color', this.data.backgroundColor);
-    this.inputTextBox.setAttribute('borderColor', this.data.borderColor);
-    this.inputTextBox.setAttribute('borderWidth', this.data.borderWidth);
+  update(oldData) {
+    if (oldData.value !== this.data.value) {
+      this.inputText.setAttribute('value', this.data.value);
+    }
+
+    if (oldData.font !== this.data.font) {
+      this.inputText.setAttribute('font', this.data.font);
+    }
+
+    if (oldData.width !== this.data.width) {
+      this.inputTextBox.setAttribute('width', this.data.width);
+    }
+
+    if (oldData.height !== this.data.height) {
+      this.inputTextBox.setAttribute('height', this.data.height);
+    }
+
+    if (oldData.backgroundColor !== this.data.backgroundColor) {
+      this.inputTextBox.setAttribute('color', this.data.backgroundColor);
+    }
+
+    if (oldData.borderColor !== this.data.borderColor) {
+      this.inputTextBox.setAttribute('border-color', this.data.borderColor);
+    }
+
+    if (oldData.borderWidth !== this.data.borderWidth) {
+      this.inputTextBox.setAttribute('border-width', this.data.borderWidth);
+    }
   },
 });
 
@@ -64,6 +93,7 @@ AFRAME.registerPrimitive('a-input', {
     'background-color': 'aframe-input.backgroundColor',
     'border-color': 'aframe-input.borderColor',
     'border-width': 'aframe-input.borderWidth',
+    'focus-border-color': 'aframe-input.focusBorderColor',
   },
 });
 
