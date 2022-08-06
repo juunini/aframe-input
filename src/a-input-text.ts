@@ -22,6 +22,8 @@ AFRAME.registerComponent('input-text', {
     front: document.createElement('a-troika-text'),
     back: document.createElement('a-troika-text'),
   },
+  /** @private */ width: 0,
+  /** @private */ height: 0,
 
   init() {
     SIDES.forEach((side) => this.initSide(side));
@@ -33,6 +35,13 @@ AFRAME.registerComponent('input-text', {
     this.side[side].setAttribute('position', { x: 0, y: 0, z: side === 'front' ? POSITION_Z : -POSITION_Z });
     this.side[side].setAttribute('anchor', this.data.align);
     this.el.appendChild(this.side[side]);
+  },
+
+  tick() {
+    // @ts-ignore
+    const { x, y } = this.side.front.object3DMap.mesh.geometry.boundingBox.max;
+    this.width = x;
+    this.height = y;
   },
 
   update({
