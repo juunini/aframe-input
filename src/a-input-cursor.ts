@@ -37,7 +37,7 @@ AFRAME.registerComponent('input-cursor', {
     this.side[side].setAttribute('color', this.data.color);
     this.side[side].setAttribute('opacity', this.data.opacity);
     this.side[side].setAttribute('transparent', true);
-    this.side[side].setAttribute('width', 0.1);
+    this.side[side].setAttribute('width', this.data.size * 0.01);
     this.side[side].setAttribute('height', 0.25);
     this.side[side].setAttribute('animation', {
       property: 'opacity',
@@ -90,7 +90,7 @@ AFRAME.registerComponent('input-cursor', {
     }));
   },
   /** @private */ updateSize() {
-    SIDES.forEach((side) => this.side[side].setAttribute('width', this.data.size * 0.1));
+    SIDES.forEach((side) => this.side[side].setAttribute('width', this.data.size * 0.01));
     SIDES.forEach((side) => this.side[side].setAttribute('position', {
       x: this.data.positionX + (this.data.size * 0.05),
       y: 0,
