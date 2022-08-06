@@ -4,18 +4,18 @@ import { SIDES } from './constants';
 const POSITION_Z = 0.004;
 
 interface Schema {
-  size: number;
   color: string;
   opacity: number;
-  positionX: number;
+  selectionStart: number;
+  selectionEnd: number;
 }
 
 AFRAME.registerComponent('input-cursor', {
   schema: {
-    size: { type: 'number', default: 1 },
     color: { type: 'color', default: '#000' },
     opacity: { type: 'number', default: 0.5 },
-    positionX: { type: 'number', default: 0 },
+    selectionStart: { type: 'number', default: 0 },
+    selectionEnd: { type: 'number', default: 0 },
   },
 
   /** @private */ side: {
@@ -30,14 +30,14 @@ AFRAME.registerComponent('input-cursor', {
   /** @private */ initSide(side: Side) {
     this.side[side].setAttribute('side', side);
     this.side[side].setAttribute('position', {
-      x: this.data.positionX + (this.data.size * 0.05),
+      x: this.data.selectionEnd,
       y: 0,
       z: side === 'front' ? POSITION_Z : -POSITION_Z,
     });
     this.side[side].setAttribute('color', this.data.color);
     this.side[side].setAttribute('opacity', this.data.opacity);
     this.side[side].setAttribute('transparent', true);
-    this.side[side].setAttribute('width', this.data.size * 0.01);
+    this.side[side].setAttribute('width', this.data.selectionEnd - this.data.selectionStart + 0.01);
     this.side[side].setAttribute('height', 0.25);
     this.side[side].setAttribute('animation', {
       property: 'opacity',
@@ -55,8 +55,8 @@ AFRAME.registerComponent('input-cursor', {
   update({
     color,
     opacity,
-    positionX,
-    size,
+    selectionStart,
+    selectionEnd,
   }: Schema) {
     if (color !== this.data.color) {
       this.updateColor();
@@ -66,12 +66,12 @@ AFRAME.registerComponent('input-cursor', {
       this.updateOpacity();
     }
 
-    if (positionX !== this.data.positionX) {
-      this.updatePositionX();
+    if (selectionStart !== this.data.selectionStart) {
+      this.selectionStart();
     }
 
-    if (size !== this.data.size) {
-      this.updateSize();
+    if (selectionEnd !== this.data.selectionEnd) {
+      this.selectionEnd();
     }
   },
 
@@ -82,20 +82,16 @@ AFRAME.registerComponent('input-cursor', {
     SIDES.forEach((side) => this.side[side].setAttribute('opacity', this.data.opacity));
     SIDES.forEach((side) => this.side[side].setAttribute('animation', 'from', this.data.opacity));
   },
-  /** @private */ updatePositionX() {
-    SIDES.forEach((side) => this.side[side].setAttribute('position', {
-      x: this.data.positionX + (this.data.size * 0.05),
-      y: 0,
-      z: side === 'front' ? POSITION_Z : -POSITION_Z,
-    }));
+  /** @private */ selectionStart() {
+    SIDES.forEach((side) => this.side[side].setAttribute('width', this.data.selectionEnd - this.data.selectionStart + 0.01));
   },
-  /** @private */ updateSize() {
-    SIDES.forEach((side) => this.side[side].setAttribute('width', this.data.size * 0.01));
+  /** @private */ selectionEnd() {
     SIDES.forEach((side) => this.side[side].setAttribute('position', {
-      x: this.data.positionX + (this.data.size * 0.05),
+      x: this.data.selectionEnd,
       y: 0,
       z: side === 'front' ? POSITION_Z : -POSITION_Z,
     }));
+    SIDES.forEach((side) => this.side[side].setAttribute('width', this.data.selectionEnd - this.data.selectionStart + 0.01));
   },
 });
 
@@ -106,8 +102,8 @@ AFRAME.registerPrimitive('a-input-cursor', {
   mappings: {
     color: 'input-cursor.color',
     opacity: 'input-cursor.opacity',
-    'position-x': 'input-cursor.positionX',
-    size: 'input-cursor.size',
+    'selection-start': 'input-cursor.selectionStart',
+    'selection-end': 'input-cursor.selectionEnd',
   },
 });
 
