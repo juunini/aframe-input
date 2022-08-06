@@ -26,6 +26,8 @@ AFRAME.registerComponent('aframe-input', {
     this.el.appendChild(this.inputCursor);
     this.el.appendChild(this.input);
 
+    this.inputText.setAttribute('position-x', -this.data.width / 2 + 0.1);
+
     this.setInputStyle();
     this.initInputEvent();
   },
@@ -49,8 +51,8 @@ AFRAME.registerComponent('aframe-input', {
         this.inputCursor.setAttribute('visible', true);
         // @ts-ignore
         const textSize = (this.inputText.components['input-text'].width / this.input.value.length);
-        this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * textSize);
-        this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * textSize);
+        this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * textSize - (this.data.width / 2) + 0.1);
+        this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * textSize - (this.data.width / 2) + 0.1);
       },
     );
     this.input.addEventListener(
@@ -67,8 +69,8 @@ AFRAME.registerComponent('aframe-input', {
     this.input.addEventListener('keyup', () => {
       // @ts-ignore
       const textSize = (this.inputText.components['input-text'].width / this.input.value.length) || 0;
-      this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * textSize);
-      this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * textSize);
+      this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * textSize - (this.data.width / 2) + 0.1);
+      this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * textSize - (this.data.width / 2) + 0.1);
     });
   },
 

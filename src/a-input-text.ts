@@ -8,6 +8,7 @@ interface Schema {
   color: string;
   font: string;
   align: string;
+  positionX: number;
 }
 
 AFRAME.registerComponent('input-text', {
@@ -16,6 +17,7 @@ AFRAME.registerComponent('input-text', {
     color: { type: 'color', default: '#000' },
     font: { type: 'string', default: '' },
     align: { type: 'string', default: 'left' },
+    positionX: { type: 'number', default: 0 },
   },
 
   /** @private */ side: {
@@ -49,6 +51,7 @@ AFRAME.registerComponent('input-text', {
     color,
     font,
     align,
+    positionX,
   }: Schema) {
     if (color !== this.data.color) {
       this.updateColor();
@@ -65,6 +68,10 @@ AFRAME.registerComponent('input-text', {
     if (align !== this.data.align) {
       this.updateAlign();
     }
+
+    if (positionX !== this.data.positionX) {
+      this.updatePositionX();
+    }
   },
 
   /** @private */ updateValue() {
@@ -79,6 +86,9 @@ AFRAME.registerComponent('input-text', {
   /** @private */ updateAlign() {
     SIDES.forEach((side) => this.side[side].setAttribute('anchor', this.data.align));
   },
+  /** @private */ updatePositionX() {
+    SIDES.forEach((side) => this.side[side].setAttribute('position', 'x', this.data.positionX));
+  },
 });
 
 AFRAME.registerPrimitive('a-input-text', {
@@ -90,6 +100,7 @@ AFRAME.registerPrimitive('a-input-text', {
     color: 'input-text.color',
     font: 'input-text.font',
     align: 'input-text.align',
+    'position-x': 'input-text.positionX',
   },
 });
 
