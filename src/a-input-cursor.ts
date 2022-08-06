@@ -83,11 +83,24 @@ AFRAME.registerComponent('input-cursor', {
     SIDES.forEach((side) => this.side[side].setAttribute('animation', 'from', this.data.opacity));
   },
   /** @private */ selectionStart() {
+    const selectionDiff = this.data.selectionEnd - this.data.selectionStart;
+    const calibrationTextPosition = selectionDiff === 0 ? 0 : selectionDiff / 2;
+    const positionX: number = this.data.selectionStart + calibrationTextPosition;
+
+    SIDES.forEach((side) => this.side[side].setAttribute('position', {
+      x: Number.isNaN(positionX) ? 0 : positionX,
+      y: 0,
+      z: side === 'front' ? POSITION_Z : -POSITION_Z,
+    }));
     SIDES.forEach((side) => this.side[side].setAttribute('width', this.data.selectionEnd - this.data.selectionStart + 0.01));
   },
   /** @private */ selectionEnd() {
+    const selectionDiff = this.data.selectionEnd - this.data.selectionStart;
+    const calibrationTextPosition = selectionDiff === 0 ? 0 : selectionDiff / 2;
+    const positionX = this.data.selectionStart + calibrationTextPosition;
+
     SIDES.forEach((side) => this.side[side].setAttribute('position', {
-      x: this.data.selectionEnd,
+      x: Number.isNaN(positionX) ? 0 : positionX,
       y: 0,
       z: side === 'front' ? POSITION_Z : -POSITION_Z,
     }));

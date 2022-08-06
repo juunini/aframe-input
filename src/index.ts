@@ -47,8 +47,10 @@ AFRAME.registerComponent('aframe-input', {
       () => {
         this.inputTextBox.setAttribute('border-color', this.data.focusBorderColor);
         this.inputCursor.setAttribute('visible', true);
-        this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * 0.124);
-        this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * 0.124);
+        // @ts-ignore
+        const textSize = (this.inputText.components['input-text'].width / this.input.value.length);
+        this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * textSize);
+        this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * textSize);
       },
     );
     this.input.addEventListener(
@@ -63,8 +65,10 @@ AFRAME.registerComponent('aframe-input', {
       () => this.el.setAttribute('aframe-input', 'value', this.input.value),
     );
     this.input.addEventListener('keyup', () => {
-      this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * 0.124);
-      this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * 0.124);
+      // @ts-ignore
+      const textSize = (this.inputText.components['input-text'].width / this.input.value.length);
+      this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * textSize);
+      this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * textSize);
     });
   },
 
