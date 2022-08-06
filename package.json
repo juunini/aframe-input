@@ -1,12 +1,12 @@
 {
   "name": "aframe-input",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "description": "Using input element in AFRAME!",
   "homepage": "https://github.com/juunini/aframe-input",
   "scripts": {
     "test": "is-ci \"test:ci\" \"test:dev\"",
-    "test:dev": "npm run test:types && npm run test:format && npm run test:eslint && jest --watch",
-    "test:ci": "npm run test:types && npm run test:format && npm run test:eslint && jest --coverage",
+    "test:dev": "pnpm run test:types && pnpm run test:format && pnpm run test:eslint && jest --watch",
+    "test:ci": "pnpm run test:types && pnpm run test:format && pnpm run test:eslint && jest --coverage",
     "test:coverage": "pnpm test:ci; open coverage/lcov-report/index.html",
     "test:format": "pnpm eslint",
     "test:types": "tsc",
