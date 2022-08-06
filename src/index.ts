@@ -66,7 +66,7 @@ AFRAME.registerComponent('aframe-input', {
     );
     this.input.addEventListener('keyup', () => {
       // @ts-ignore
-      const textSize = (this.inputText.components['input-text'].width / this.input.value.length);
+      const textSize = (this.inputText.components['input-text'].width / this.input.value.length) || 0;
       this.inputCursor.setAttribute('selection-start', this.input.selectionStart! * textSize);
       this.inputCursor.setAttribute('selection-end', this.input.selectionEnd! * textSize);
     });

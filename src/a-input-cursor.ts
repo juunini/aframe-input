@@ -88,7 +88,7 @@ AFRAME.registerComponent('input-cursor', {
     const positionX: number = this.data.selectionStart + calibrationTextPosition;
 
     SIDES.forEach((side) => this.side[side].setAttribute('position', {
-      x: Number.isNaN(positionX) ? 0 : positionX,
+      x: positionX || 0,
       y: 0,
       z: side === 'front' ? POSITION_Z : -POSITION_Z,
     }));
@@ -100,7 +100,7 @@ AFRAME.registerComponent('input-cursor', {
     const positionX = this.data.selectionStart + calibrationTextPosition;
 
     SIDES.forEach((side) => this.side[side].setAttribute('position', {
-      x: Number.isNaN(positionX) ? 0 : positionX,
+      x: positionX || 0,
       y: 0,
       z: side === 'front' ? POSITION_Z : -POSITION_Z,
     }));
